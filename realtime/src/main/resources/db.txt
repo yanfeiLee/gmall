@@ -1,0 +1,16 @@
+-- 通过phoenix创建 日活表
+create table gmall_dau
+(
+   mid varchar,
+   uid varchar,
+   appid varchar,
+   area varchar,
+   os varchar,
+   ch varchar,
+   type varchar,
+   vs varchar,
+   logDate varchar,
+   logHour varchar,
+   ts bigint
+   CONSTRAINT dau_pk PRIMARY KEY (mid, logDate)  --复合主键作为 rowKey
+);

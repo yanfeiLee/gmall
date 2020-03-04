@@ -2,7 +2,6 @@ package com.lyf.gmall.realtime.app
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Date
 
 import com.alibaba.fastjson.JSON
 import com.lyf.gmall.common.constant.GmallConstant
@@ -60,6 +59,9 @@ object DauApp {
         else itr.toList.sortBy(_.ts).take(1)
       }
     }
+
+    //将就是结果进行cache ,防止分流时，重复计算
+    finalStream.cache()
 
     //2.3.利用redis 中的set集合，对每日 每5s间 重复登录的设备进行去重
     finalStream.foreachRDD(rdd => {

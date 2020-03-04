@@ -20,6 +20,7 @@
         <module>datamocker</module>
         <module>logger</module>
         <module>realtime</module>
+        <module>publisher</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
