@@ -21,6 +21,7 @@
         <module>logger</module>
         <module>realtime</module>
         <module>publisher</module>
+        <module>canal</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
