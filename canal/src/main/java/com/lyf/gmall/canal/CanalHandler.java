@@ -1,6 +1,9 @@
 package com.lyf.gmall.canal;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.otter.canal.protocol.CanalEntry;
+import com.lyf.gmall.canal.util.MyKafkaSender;
+import com.lyf.gmall.common.constant.GmallConstant;
 
 import java.util.List;
 
@@ -23,16 +26,19 @@ public class CanalHandler {
         if(this.tableName.equals("order_info")){
             for (CanalEntry.RowData rowData : rowDatasList) {
                 List<CanalEntry.Column> afterColumnsList = rowData.getAfterColumnsList();
-                //输出数据到控制台
-                for (CanalEntry.Column column : afterColumnsList) {
-                    System.out.print(column.getName()+"=>"+column.getValue());
-                    System.out.println("");
+
+                //过滤掉 after无值的sql 操作，eg:delete
+                if(afterColumnsList.size() !=0){
+                    JSONObject jsonObject = new JSONObject();
+                    //输出数据到控制台
+                    for (CanalEntry.Column column : afterColumnsList) {
+                        System.out.print(column.getName()+"=>"+column.getValue()+"|");
+                        jsonObject.put(column.getName(), column.getValue());
+                    }
+                    System.out.println("------------------------------");
+                    //组装数据发送到kafka
+                    MyKafkaSender.send(GmallConstant.KAFKA_TOPIC_ORDER,jsonObject.toJSONString());
                 }
-                System.out.println("------------------------------");
-                //组装数据发送到kafka
-
-
-
             }
         }
     }

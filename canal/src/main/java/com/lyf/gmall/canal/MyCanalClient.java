@@ -37,20 +37,21 @@ public class MyCanalClient {
                         ByteString storeValue = entry.getStoreValue();
                         try {
                             CanalEntry.RowChange rowChange = CanalEntry.RowChange.parseFrom(storeValue);
-                            //操作的数据行list
-                            List<CanalEntry.RowData> rowDatasList = rowChange.getRowDatasList();
-                            //操作类型
-                            CanalEntry.EventType eventType = rowChange.getEventType();
-                            //操作的表
-                            String tableName = entry.getHeader().getTableName();
+                            if(null != rowChange){
+                                //操作的数据行list
+                                List<CanalEntry.RowData> rowDatasList = rowChange.getRowDatasList();
+                                //操作类型
+                                CanalEntry.EventType eventType = rowChange.getEventType();
+                                //操作的表
+                                String tableName = entry.getHeader().getTableName();
 
 
-                            //根据具体业务处理数据
-                            CanalHandler canalHandler = new CanalHandler(rowDatasList, eventType, tableName);
-                            if(rowDatasList.size() != 0){
-                                canalHandler.handle();
+                                //根据具体业务处理数据
+                                CanalHandler canalHandler = new CanalHandler(rowDatasList, eventType, tableName);
+                                if(rowDatasList.size() != 0 && rowDatasList != null){
+                                    canalHandler.handle();
+                                }
                             }
-
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                             new RuntimeException("反序列化异常");

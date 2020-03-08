@@ -2,6 +2,7 @@ package com.lyf.gmall.publisher.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.lyf.gmall.publisher.service.DauService;
+import com.lyf.gmall.publisher.service.OrderService;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ public class DauController {
 
     @Autowired
     DauService dauService;
+    @Autowired
+    OrderService orderService;
 
     @GetMapping("realtime-total")
     public String getDauTotal(@RequestParam("date") String date){
@@ -36,8 +39,17 @@ public class DauController {
         mp2.put("id", "new_mid");
         mp2.put("name", "新增设备");
         mp2.put("value", 223);
+        //当日订单总金额
+        Double orderTotal = orderService.getOrderTotal(date);
+//        System.out.println(orderTotal);
+        HashMap mp3 = new HashMap();
+        mp3.put("id","order_amount");
+        mp3.put("name","新增交易额");
+        mp3.put("value", orderTotal);
+
         list.add(mp1);
         list.add(mp2);
+        list.add(mp3);
         String jsonString = JSON.toJSONString(list);
 
         return jsonString;
@@ -54,6 +66,12 @@ public class DauController {
 
             //添加昨日数据
             Map yesterday = dauService.getDauHour(getYesterday(date));
+            resMap.put("yesterday", yesterday);
+        }else if(id.equals("order_amount")){
+            Map today = orderService.getOrderHour(date);
+            resMap.put("today", today);
+            //昨日订单金额
+            Map yesterday = orderService.getOrderHour(getYesterday(date));
             resMap.put("yesterday", yesterday);
         }
 

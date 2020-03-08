@@ -14,3 +14,26 @@ create table gmall_dau
    ts bigint
    CONSTRAINT dau_pk PRIMARY KEY (mid, logDate)  --复合主键作为 rowKey
 );
+-- 通过phoenix创建 订单表
+create table gmall_order_info
+(         id varchar primary key ,
+          province_id varchar,
+          consignee varchar,
+          order_comment varchar,
+          consignee_tel varchar,
+          order_status varchar,
+          payment_way varchar,
+          user_id varchar,
+          img_url varchar,
+          total_amount double,
+          expire_time varchar,
+          delivery_address varchar,
+          create_time varchar,
+          operate_time varchar,
+          tracking_no varchar,
+          parent_order_id varchar,
+          out_trade_no varchar,
+          trade_body varchar,
+          create_date varchar,
+          create_hour varchar
+)
