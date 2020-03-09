@@ -19,7 +19,8 @@ case class OrderInfo (id: String,
                       out_trade_no: String,
                       trade_body: String,
                       var create_date: String,
-                      var create_hour: String){
+                      var create_hour: String,
+                      var if_first_order:String){
 
   //敏感信息脱敏：eg tel (18823008899)
   this.consignee_tel = consignee_tel.take(3)+"****"+consignee_tel.takeRight(4)
