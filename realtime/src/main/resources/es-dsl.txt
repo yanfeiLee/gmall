@@ -1,0 +1,34 @@
+#创建优惠券预警的模板，数据小于10G时不分片，每片数据量30G
+#假设每日100G数据量
+PUT _template/gmall_coupon_alert
+{
+"index_patterns": ["gmall_coupon_alert*"],
+"settings": {
+ "number_of_shards": 4
+},
+"aliases" : {
+ "{index}-query": {},
+ "gmall_coupon_alert-query":{}
+},
+"mappings": {
+ "_doc": {
+   "properties": {
+     "mid": {
+       "type": "keyword"
+     },
+     "uids": {
+       "type":"keyword"
+     },
+     "itemIds":{
+       "type":"keyword"
+     },
+     "events":{
+       "type":"keyword"
+     },
+     "ts":{
+       "type":"date"
+     }
+   }
+ }
+}
+}
